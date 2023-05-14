@@ -18,7 +18,7 @@ class Przepis(models.Model):
     czas_przygotowania_w_minutach = models.IntegerField()
     kategorie = models.ManyToManyField(Kategoria)
     zdjęcie = models.ImageField(upload_to='zdjecia/', null=True, blank=True)
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default='')
     kalorie_na_100g = models.FloatField(null=True, blank=True)
     def __str__(self):
         return self.nazwa
