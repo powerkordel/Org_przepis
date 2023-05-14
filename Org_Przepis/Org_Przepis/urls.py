@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Przepisy import views
+from Przepisy.views import register_view, login_view, logout_view, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,8 @@ urlpatterns = [
     path('edytuj_przepis<int:pk>', views.edytuj_przepis, name='edytuj_przepis'),
     path('zapisz_przepis<int:pk>', views.zapisz_przepis, name='zapisz_przepis'),
     path('zdjecia/<str:zdjecie>', views.zdjecie),
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('', home, name='home')
 ]
