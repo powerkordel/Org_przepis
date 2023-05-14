@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista przepisów</title>
+</head>
+<body>
+<div>
+    <ul>
+    {% for przepis in  przepisy %}
+        <li>
+        <p> {{ przepis.nazwa }}&nbsp : &nbsp {{ przepis.kategoria }}</p>
+        <img src="{{przepis.zdjecie}}">
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
