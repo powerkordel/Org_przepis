@@ -57,3 +57,47 @@ def zdjecie(request, zdjecie):
             return HttpResponse(bajty_obrazka, content_type=f'image/{rozszerzenie}')
     except:
         return HttpResponse([], content_type=f'image/{rozszerzenie}')
+
+
+def register_view(request):
+    # obsługa formularza rejestracji
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # zalogowanie nowo zarejestrowanego użytkownika
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+def login_view(request):
+    # obsługa formularza logowania
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            # zalogowanie użytkownika
+            login(request, user)
+            return redirect('home')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    # wylogowanie użytkownika
+    logout(request)
+    return redirect('home')
+
+
+
+@login_required
+def home(request):
+    wszystkie_przepisy = Przepis.objects.all()
+    dane = {
+        'przepisy': wszystkie_przepisy,
+    }
+    return render(request, 'lista_przepisow.html', dane)
+
+#jeszcze do ogarniecia
