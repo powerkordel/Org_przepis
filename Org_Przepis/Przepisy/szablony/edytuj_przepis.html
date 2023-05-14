@@ -16,6 +16,7 @@
         }
         label {
             margin-bottom: 2px;
+            font-weight: bold;
         }
         .wiersz {
             margin-bottom: 10px;
@@ -38,7 +39,11 @@
                 </div>
                 <div class="wiersz">
                     <label>Czas przygotowania: </label>
-                    <input type="number" min="0" name="nowy_czas" value="{{przepis.czas_przygotowania}}">
+                    <input type="number" min="0" name="nowy_czas" value="{{przepis.czas_przygotowania_w_minutach}}">
+                </div>
+                <div class="wiersz">
+                    <label>Kalorie na 100g: </label>
+                    <input type="number" min="0" step="0.01" name="nowe_kalorie" value="{{przepis.kalorie_na_100g}}">
                 </div>
                 <div class="wiersz">
                     <label>Kategoria: </label>
@@ -51,7 +56,7 @@
                 </div>
                 <div class="wiersz">
                     <label>Zdjęcie: </label>
-                    <input type="file" name="nowe_zdjecie" accept="image/png, image/jpeg">
+                    <input type="file" name="nowe_zdjecie" accept="image/png, image/jpeg, image/jpg">
                 </div>
                   <input type="submit" value="Zapisz zmiany">
             </div>

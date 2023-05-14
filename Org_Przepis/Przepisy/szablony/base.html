@@ -3,6 +3,33 @@
 <html lang="pl">
 <head>
   <title>Moja aplikacja</title>
+  <style>
+    body {
+      width: max-content;
+      margin: auto;
+    }
+    #glowna_zawartosc {
+
+    }
+    .formularz {
+      padding: 10px;
+    }
+    .form_pole {
+      display: grid;
+      margin-bottom: 10px;
+      width: max-content;
+    }
+    .form_bledy {
+      font-color: red;
+    }
+    .form_label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form_wartosc {
+
+    }
+  </style>
 </head>
 <body>
   <nav>
@@ -16,7 +43,9 @@
       {% endif %}
     </ul>
   </nav>
-  {% block content %}
-  {% endblock %}
+  <div id="glowna_zawartosc">
+    {% block content %}
+    {% endblock %}
+  </div>
 </body>
 </html>

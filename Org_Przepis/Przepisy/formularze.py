@@ -1,9 +1,8 @@
-from django import forms
+from django.forms import ModelForm
+from .models import Przepis
 
 
-class PrzepisForm(forms.Form):
-    nazwa = forms.CharField(label='Nazwa', max_length=100)
-    opis = forms.Textarea(label='Opis')
-    czas_przygotowania = forms.IntegerField(label='Czas przygotowania')
-    kategoria = forms.ChoiceField(label='Kategoria')
-    zdjecie = forms.ImageField(label='Zdjecie')
+class PrzepisForm(ModelForm):
+    class Meta:
+        model = Przepis
+        fields = ['nazwa', 'opis', 'czas_przygotowania_w_minutach', 'kategorie', 'zdjęcie', 'kalorie_na_100g', 'autor']

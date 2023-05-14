@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista przepisów</title>
+{% extends 'base.html' %}
+
+{% block content %}
     <style>
-        body {
-            width: max-content;
-            margin: auto;
-        }
         .przepis {
             display: grid;
             border: solid 2px black;
             padding: 10px;
             background-color: lightblue;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
         .wiersz {
             display: flex;
@@ -28,10 +24,14 @@
             max-height: 400px;
         }
     </style>
-</head>
-<body>
+
 <h1>Przepisy:</h1>
 <div>
+    <div class="wiersz">
+        <form action="{% url 'dodaj_przepis' %}">
+            <input type="submit" value="Dodaj przepis" />
+        </form>
+    </div>
     {% for przepis in  przepisy %}
         <div class="przepis">
             <div class="wiersz">
@@ -40,26 +40,38 @@
             <div class="wiersz">
                 <div style="display: grid">
                     {% for linijka in przepis.opis_podzielony %}
-                    <span>{{linijka}}</span>
+                    <span>{{linijka}}&nbsp;</span>
                     {% endfor %}
                 </div>
             </div>
             <div class="wiersz">
                 <label>Czas przygotowania: </label>
-                <span>{{przepis.czas_przygotowania}} min</span>
+                <span>{{przepis.czas_przygotowania_w_minutach}} min</span>
             </div>
             <div class="wiersz">
-                <label>Kategoria: </label>
-                <span>{{przepis.kategoria}}</span>
+                <label>Kalorie na 100g: </label>
+                <span>{{przepis.kalorie_na_100g}}</span>
             </div>
             <div class="wiersz">
-                <img src="{{przepis.zdjecie}}">
+                <div style="display: grid">
+                    <label>Kategorie: </label>
+                    {% for k in przepis.k %}
+                    <span>{{k}}</span>
+                    {% endfor %}
+                </div>
             </div>
             <div class="wiersz">
-                <a class="btn btn-primary" href="{% url 'edytuj_przepis' pk=przepis.pk%}">Edytuj</a>
+                <img src="{{przepis.zdjęcie}}">
+            </div>
+            <div class="wiersz">
+                <form action="{% url 'edytuj_przepis' pk=przepis.pk%}">
+                    <input type="submit" value="Edytuj" />
+                </form>
+                <form action="{% url 'usun_przepis' pk=przepis.pk%}">
+                    <input type="submit" value="Usuń" />
+                </form>
             </div>
         </div>
     {% endfor %}
 </div>
-</body>
-</html>
+{% endblock %}

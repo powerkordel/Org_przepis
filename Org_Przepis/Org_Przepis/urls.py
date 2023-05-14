@@ -17,16 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Przepisy import views
-from Przepisy.views import register_view, login_view, logout_view, home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('przepisy', views.przepisy, name='przepisy'),
     path('edytuj_przepis<int:pk>', views.edytuj_przepis, name='edytuj_przepis'),
+    path('usun_przepis<int:pk>', views.usun_przepis, name='usun_przepis'),
     path('zapisz_przepis<int:pk>', views.zapisz_przepis, name='zapisz_przepis'),
+    path('dodaj_przepis', views.dodaj_przepis, name='dodaj_przepis'),
     path('zdjecia/<str:zdjecie>', views.zdjecie),
-    path('register/', register_view, name='register'),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
-    path('', home, name='home')
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('', views.home, name='home')
 ]
