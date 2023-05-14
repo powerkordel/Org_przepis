@@ -20,6 +20,8 @@ from Przepisy import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('przepisy', views.przepisy, name='Lista przepisow'),
+    path('przepisy', views.przepisy, name='przepisy'),
+    path('edytuj_przepis<int:pk>', views.edytuj_przepis, name='edytuj_przepis'),
+    path('zapisz_przepis<int:pk>', views.zapisz_przepis, name='zapisz_przepis'),
     path('zdjecia/<str:zdjecie>', views.zdjecie),
 ]

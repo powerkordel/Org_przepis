@@ -3,17 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista przepisów</title>
+    <style>
+        body {
+            width: max-content;
+            margin: auto;
+        }
+        .przepis {
+            display: grid;
+            border: solid 2px black;
+            padding: 10px;
+            background-color: lightblue;
+        }
+        .wiersz {
+            display: flex;
+            padding: 5px;
+            flex: 1;
+        }
+        label {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        img {
+            max-width: 400px;
+            max-height: 400px;
+        }
+    </style>
 </head>
 <body>
+<h1>Przepisy:</h1>
 <div>
-    <ul>
     {% for przepis in  przepisy %}
-        <li>
-        <p> {{ przepis.nazwa }}&nbsp : &nbsp {{ przepis.kategoria }}</p>
-        <img src="{{przepis.zdjecie}}">
-        </li>
+        <div class="przepis">
+            <div class="wiersz">
+                <h2>{{przepis.nazwa}}</h2>
+            </div>
+            <div class="wiersz">
+                <div style="display: grid">
+                    {% for linijka in przepis.opis_podzielony %}
+                    <span>{{linijka}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="wiersz">
+                <label>Czas przygotowania: </label>
+                <span>{{przepis.czas_przygotowania}} min</span>
+            </div>
+            <div class="wiersz">
+                <label>Kategoria: </label>
+                <span>{{przepis.kategoria}}</span>
+            </div>
+            <div class="wiersz">
+                <img src="{{przepis.zdjecie}}">
+            </div>
+            <div class="wiersz">
+                <a class="btn btn-primary" href="{% url 'edytuj_przepis' pk=przepis.pk%}">Edytuj</a>
+            </div>
+        </div>
     {% endfor %}
-    </ul>
 </div>
 </body>
 </html>
