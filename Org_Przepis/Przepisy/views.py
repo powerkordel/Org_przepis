@@ -71,5 +71,3 @@ def home(request):
         'przepisy': wszystkie_przepisy,
     }
     return render(request, 'lista_przepisow.html', dane)
-
-#jeszcze do ogarniecia
