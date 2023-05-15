@@ -23,7 +23,6 @@ urlpatterns = [
     path('przepisy', views.przepisy, name='przepisy'),
     path('edytuj_przepis<int:pk>', views.edytuj_przepis, name='edytuj_przepis'),
     path('usun_przepis<int:pk>', views.usun_przepis, name='usun_przepis'),
-    path('zapisz_przepis<int:pk>', views.zapisz_przepis, name='zapisz_przepis'),
     path('dodaj_przepis', views.dodaj_przepis, name='dodaj_przepis'),
     path('zdjecia/<str:zdjecie>', views.zdjecie),
     path('register/', views.register_view, name='register'),

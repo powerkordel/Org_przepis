@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.http import HttpResponse
-from .models import Przepis, Kategoria, User
+from .models import Przepis, User
 import os
 from Org_Przepis import settings
 from .formularze import PrzepisForm
@@ -16,7 +16,8 @@ from .formularze import PrzepisForm
 def przepisy(request):
     if (request.GET.get('przycisk_usun')):
         Przepis.delete()
-    wszystkie_przepisy = Przepis.objects.all()
+    uzytkownik = User.objects.get(pk=request.user.pk)
+    wszystkie_przepisy = Przepis.objects.filter(autor=uzytkownik)
     for przepis in wszystkie_przepisy:
         przepis.opis_podzielony = przepis.opis.split('\n')
         przepis.k = przepis.kategorie.all()
@@ -24,36 +25,6 @@ def przepisy(request):
         'przepisy': wszystkie_przepisy,
     }
     return render(request, 'lista_przepisow.html', dane)
-
-
-def edytuj_przepis(request, pk):
-    if request.method == "GET":
-        przepis = Przepis.objects.get(pk=pk)
-        kategorie = Kategoria.objects.all()
-        dane = {
-            'przepis': przepis,
-            'kategorie': kategorie,
-        }
-        return render(request, 'edytuj_przepis.html', dane)
-
-
-def zapisz_przepis(request, pk):
-    if request.method == 'POST':
-        post = request.POST
-        przepis = Przepis.objects.get(pk=pk)
-        przepis.nazwa = str(post.get('nowa_nazwa'))
-        przepis.opis = str(post.get('nowy_opis'))
-        przepis.czas_przygotowania_w_minutach = int(post.get('nowy_czas'))
-        przepis.kalorie_na_100g = float(post.get('nowe_kalorie'))
-        kategoria = str(post.get('nowa_kategoria'))
-        pasujace_kategorie = Kategoria.objects.filter(nazwa=kategoria)
-        if len(pasujace_kategorie) > 0:
-            przepis.kategoria = pasujace_kategorie[0]
-        nowe_zdjecie = request.FILES.get('nowe_zdjecie')
-        if nowe_zdjecie is not None:
-            przepis.zdjęcie = nowe_zdjecie
-        przepis.save()
-        return redirect(reverse('przepisy'))
 
 
 def usun_przepis(request, pk):
@@ -65,17 +36,44 @@ def usun_przepis(request, pk):
 
 def dodaj_przepis(request):
     if request.method == 'POST':
-        formularz = PrzepisForm(request.POST, request.FILES)
+        przepis = Przepis()
+        przepis.autor = User.objects.get(pk=request.user.pk)
+        formularz = PrzepisForm(request.POST, request.FILES, instance=przepis)
         if formularz.is_valid():
+            nowy_przepis = formularz.save()
+            nowy_przepis.save()
+            return redirect('przepisy')
+    else:
+        przepis = Przepis()
+        przepis.autor = User.objects.get(pk=request.user.pk)
+        formularz = PrzepisForm(instance=przepis)
+    dane = {
+        'form': formularz,
+        'tytul_formularza': 'Dodaj przepis',
+        'tresc_przycisku': 'Dodaj'
+    }
+    return render(request, 'generyczny_formularz.html', dane)
+
+
+def edytuj_przepis(request, pk):
+    if request.method == 'POST':
+        przepis = Przepis.objects.get(pk=pk)
+        formularz = PrzepisForm(request.POST, request.FILES, instance=przepis)
+        if formularz.is_valid():
+            formularz.autor = User.objects.get(pk=request.user.pk)
             nowy_przepis = formularz.save()
             # nowy_przepis.autor = User.objects.get(id=request.user.id)
             nowy_przepis.save()
             return redirect('przepisy')
     else:
-        formularz = PrzepisForm()
-    return render(request, 'dodaj_przepis.html', {'form': formularz})
-
-
+        przepis = Przepis.objects.get(pk=pk)
+        formularz = PrzepisForm(instance=przepis)
+    dane = {
+        'form': formularz,
+        'tytul_formularza': 'Edytuj przepis',
+        'tresc_przycisku': 'Zapisz',
+    }
+    return render(request, 'generyczny_formularz.html', dane)
 
 def zdjecie(request, zdjecie):
     _, rozszerzenie = os.path.splitext(zdjecie)
@@ -99,7 +97,12 @@ def register_view(request):
             redirect(reverse('home'))
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    dane = {
+        'form': form,
+        'tytul_formularza': 'Rejestracja',
+        'tresc_przycisku': 'Zarejestruj się',
+    }
+    return render(request, 'generyczny_formularz.html', dane)
 
 
 def login_view(request):
@@ -113,7 +116,12 @@ def login_view(request):
             redirect(reverse('home'))
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    dane = {
+        'form': form,
+        'tytul_formularza': 'Logowanie',
+        'tresc_przycisku': 'Zaloguj się',
+    }
+    return render(request, 'generyczny_formularz.html', dane)
 
 
 def logout_view(request):

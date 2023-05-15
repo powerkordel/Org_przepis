@@ -4,15 +4,53 @@
 <head>
   <title>Moja aplikacja</title>
   <style>
+    :root {
+      --gradient_przyciski: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
+      --gradient_zawartosc: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
+      --gradient_przepisy: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
+    }
+    nav {
+      display: flex;
+      flex-direction: row;
+      margin-top: 5px;
+      padding-bottom: 5px;
+      <!--border-bottom: solid 3px black;-->
+      width: -webkit-fill-available;
+      height: 75px;
+    }
+    .nav-form {
+      height: -webkit-fill-available;
+    }
+    .nav-element {
+      flex: auto;
+      height: -webkit-fill-available;
+    }
+    .nav-przycisk {
+      width: -webkit-fill-available;
+      height: -webkit-fill-available;
+      border: none;
+      border-radius: 10px;
+      margin: 3px;
+      background: var(--gradient_przyciski);
+      font-weight: bold;
+      cursor: pointer;
+      font-size: x-large;
+    }
     body {
-      width: max-content;
+      width: 1000px;
       margin: auto;
     }
     #glowna_zawartosc {
-
+      background: var(--gradient_zawartosc);
+      border-radius: 10px;
+      padding: 5px;
+      margin: 2px;
     }
     .formularz {
-      padding: 10px;
+      padding-right: 2px;
+      padding-left: 2px;
+      padding-top: 5px;
+      padding-bottom: 5px;
     }
     .form_pole {
       display: grid;
@@ -33,15 +71,29 @@
 </head>
 <body>
   <nav>
-    <ul>
-      <li><a href="{% url 'home' %}">Strona główna</a></li>
       {% if user.is_authenticated %}
-        <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+        <div class="nav-element">
+          <form class="nav-form" action="{% url 'home' %}">
+            <input class="nav-przycisk" type="submit" value="Strona główna" />
+          </form>
+        </div>
+        <div class="nav-element">
+          <form class="nav-form" action="{% url 'logout' %}">
+            <input class="nav-przycisk" type="submit" value="Wyloguj" />
+          </form>
+        </div>
       {% else %}
-        <li><a href="{% url 'register' %}">Zarejestruj</a></li>
-        <li><a href="{% url 'login' %}">Zaloguj</a></li>
+        <div class="nav-element">
+          <form class="nav-form" action="{% url 'register' %}">
+            <input class="nav-przycisk" type="submit" value="Zarejestruj" />
+          </form>
+        </div>
+        <div class="nav-element">
+          <form class="nav-form" action="{% url 'login' %}">
+            <input class="nav-przycisk" type="submit" value="Zaloguj" />
+          </form>
+        </div>
       {% endif %}
-    </ul>
   </nav>
   <div id="glowna_zawartosc">
     {% block content %}
