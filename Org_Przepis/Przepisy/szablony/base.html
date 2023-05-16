@@ -1,44 +1,51 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <title>Moja aplikacja</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
   <style>
     :root {
-      --gradient_przyciski: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
-      --gradient_zawartosc: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
+      --pasek: #CDBFB6;
+      --gradient_zawartosc: #CDBFB6;
       --gradient_przepisy: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
     }
     nav {
       display: flex;
-      flex-direction: row;
-      margin-top: 5px;
-      padding-bottom: 5px;
-      <!--border-bottom: solid 3px black;-->
-      width: -webkit-fill-available;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--pasek);
       height: 75px;
-    }
-    .nav-form {
-      height: -webkit-fill-available;
+      padding: 0 20px;
+      width: -webkit-fill-available;
+
     }
     .nav-element {
-      flex: auto;
-      height: -webkit-fill-available;
+      display: flex;
     }
     .nav-przycisk {
-      width: -webkit-fill-available;
-      height: -webkit-fill-available;
-      border: none;
+      border: 2px solid #1b1715;
       border-radius: 10px;
       margin: 3px;
-      background: var(--gradient_przyciski);
+      background: var(--przyciski);
       font-weight: bold;
       cursor: pointer;
       font-size: x-large;
+      color: #1b1715;
+      padding: 10px 20px;
+      text-decoration: none;
+    }
+    .nav-przycisk:hover {
+      background-color: #a7cca1;
     }
     body {
-      width: 1000px;
+      width: 900px;
       margin: auto;
+      background-image: url("{% static 'C:\Users\pawel\PycharmProjects\Org_przepis\Org_Przepis\Przepisy\static\deska-jasna.jpg' %}");
+      background-repeat: repeat;
+      background-size: cover;
     }
     #glowna_zawartosc {
       background: var(--gradient_zawartosc);
@@ -58,7 +65,7 @@
       width: max-content;
     }
     .form_bledy {
-      font-color: red;
+      color: red;
     }
     .form_label {
       font-weight: bold;
@@ -67,33 +74,38 @@
     .form_wartosc {
 
     }
+    .icon-home::before {
+  content: "\f015"; /* Kod ikony domu */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 5px;
+}
   </style>
 </head>
 <body>
   <nav>
+    <div class="nav-element">
+      <form class="nav-form" action="{% url 'home' %}">
+    <button class="nav-przycisk" type="submit">
+      <span class="icon-home"></span>
+      Strona główna
+    </button>
+  </form>
+    </div>
+    <div class="nav-element">
       {% if user.is_authenticated %}
-        <div class="nav-element">
-          <form class="nav-form" action="{% url 'home' %}">
-            <input class="nav-przycisk" type="submit" value="Strona główna" />
-          </form>
-        </div>
-        <div class="nav-element">
-          <form class="nav-form" action="{% url 'logout' %}">
-            <input class="nav-przycisk" type="submit" value="Wyloguj" />
-          </form>
-        </div>
+        <form class="nav-form" action="{% url 'logout' %}">
+          <input class="nav-przycisk" type="submit" value="Wyloguj" />
+        </form>
       {% else %}
-        <div class="nav-element">
-          <form class="nav-form" action="{% url 'register' %}">
-            <input class="nav-przycisk" type="submit" value="Zarejestruj" />
-          </form>
-        </div>
-        <div class="nav-element">
-          <form class="nav-form" action="{% url 'login' %}">
-            <input class="nav-przycisk" type="submit" value="Zaloguj" />
-          </form>
-        </div>
+        <form class="nav-form" action="{% url 'register' %}">
+          <input class="nav-przycisk" type="submit" value="Zarejestruj" />
+        </form>
+        <form class="nav-form" action="{% url 'login' %}">
+          <input class="nav-przycisk" type="submit" value="Zaloguj" />
+        </form>
       {% endif %}
+    </div>
   </nav>
   <div id="glowna_zawartosc">
     {% block content %}
@@ -101,3 +113,4 @@
   </div>
 </body>
 </html>
+```
