@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from .models import Przepis, User
 import os
 from Org_Przepis import settings
@@ -75,16 +75,29 @@ def edytuj_przepis(request, pk):
     }
     return render(request, 'generyczny_formularz.html', dane)
 
-def zdjecie(request, zdjecie):
+
+def zdjecie(request: HttpRequest, zdjecie: str) -> HttpResponse:
     _, rozszerzenie = os.path.splitext(zdjecie)
     sciezka = request.path
+    return zwroc_zdjecie(sciezka, rozszerzenie)
+
+
+def statyczne_pliki(request: HttpRequest, plik: str) -> HttpResponse:
+    _, rozszerzenie = os.path.splitext(plik)
+    sciezka = request.path
+    if rozszerzenie == 'jpeg' or rozszerzenie == 'jpg' or rozszerzenie == 'png':
+        return zwroc_zdjecie(sciezka, rozszerzenie)
+    else:
+        return HttpResponse([], status_code=404)
+
+
+def zwroc_zdjecie(sciezka: str, rozszerzenie: str) -> HttpResponse:
     try:
         with open(f'{settings.BASE_DIR}{sciezka}', "rb") as obrazek:
             bajty_obrazka = obrazek.read()
             return HttpResponse(bajty_obrazka, content_type=f'image/{rozszerzenie}')
-    except:
-        return HttpResponse([], content_type=f'image/{rozszerzenie}')
-
+    except FileNotFoundError:
+        return HttpResponse([], status_code=404)
 
 def register_view(request):
     # obsługa formularza rejestracji
@@ -94,7 +107,7 @@ def register_view(request):
             user = form.save()
             # zalogowanie nowo zarejestrowanego użytkownika
             login(request, user)
-            redirect(reverse('home'))
+            return redirect(reverse('home'))
     else:
         form = UserCreationForm()
     dane = {

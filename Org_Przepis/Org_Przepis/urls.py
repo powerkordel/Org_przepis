@@ -26,6 +26,7 @@ urlpatterns = [
     path('usun_przepis<int:pk>', views.usun_przepis, name='usun_przepis'),
     path('dodaj_przepis', views.dodaj_przepis, name='dodaj_przepis'),
     path('zdjecia/<str:zdjecie>', views.zdjecie),
+    path('static/<str:plik>', views.statyczne_pliki),
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
