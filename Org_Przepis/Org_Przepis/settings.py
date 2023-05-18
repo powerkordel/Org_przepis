@@ -43,6 +43,11 @@ INSTALLED_APPS = [
 #dodawane aplikacje
     'Przepisy',
 ]
+# Ustawienie silnika sesji
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+# Opcjonalne ustawienie zabezpieczeń dla ciasteczek sesji
+SESSION_COOKIE_SECURE = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Org_Przepis.urls'
@@ -103,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+LOGIN_REDIRECT_URL = 'przepisy'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Przepisy', 'static')
@@ -114,6 +121,7 @@ STATICFILES_DIRS = [
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
+
 
 LANGUAGE_CODE = 'pl'
 

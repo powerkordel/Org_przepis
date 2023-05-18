@@ -1,6 +1,5 @@
-
+<!DOCTYPE HTML>
 {% load static %}
-<!DOCTYPE html>
 <html lang="pl">
 <head>
   <title>Moja aplikacja</title>
@@ -8,11 +7,13 @@
 </head>
   <style>
     :root {
-      --pasek: #CDBFB6;
-      --gradient_zawartosc: #CDBFB6;
+      --pasek: #B6CBCC;
+      --gradient_zawartosc: #B6CBCC;
       --gradient_przepisy: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
     }
+
     nav {
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -20,6 +21,7 @@
       height: 75px;
       padding: 0 20px;
       width: -webkit-fill-available;
+
 
     }
     .nav-element {
@@ -46,12 +48,14 @@
       background-image: url("{% static 'C:\Users\pawel\PycharmProjects\Org_przepis\Org_Przepis\Przepisy\static\deska-jasna.jpg' %}");
       background-repeat: repeat;
       background-size: cover;
+
     }
     #glowna_zawartosc {
       background: var(--gradient_zawartosc);
       border-radius: 10px;
       padding: 5px;
       margin: 2px;
+      border: 2px solid #1b1715;
     }
     .formularz {
       padding-right: 2px;
@@ -87,7 +91,7 @@
     <div class="nav-element">
       <form class="nav-form" action="{% url 'home' %}">
     <button class="nav-przycisk" type="submit">
-      <span class="icon-home"></span>
+      <span class="icon-home" ></span>
       Strona główna
     </button>
   </form>
@@ -113,4 +117,3 @@
   </div>
 </body>
 </html>
-```

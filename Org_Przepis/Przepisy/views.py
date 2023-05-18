@@ -14,7 +14,7 @@ from .formularze import PrzepisForm
 
 
 def przepisy(request):
-    if (request.GET.get('przycisk_usun')):
+    if request.GET.get('przycisk_usun'):
         Przepis.delete()
     uzytkownik = User.objects.get(pk=request.user.pk)
     wszystkie_przepisy = Przepis.objects.filter(autor=uzytkownik)
@@ -113,7 +113,7 @@ def login_view(request):
             user = form.get_user()
             # zalogowanie użytkownika
             login(request, user)
-            redirect(reverse('home'))
+            return redirect(reverse('home'))
     else:
         form = AuthenticationForm()
     dane = {
@@ -137,4 +137,3 @@ def home(request):
         return redirect(reverse('przepisy'))
 
 
-#jeszcze do ogarniecia
