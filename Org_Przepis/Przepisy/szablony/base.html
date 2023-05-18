@@ -27,25 +27,29 @@
     .nav-element {
       display: flex;
     }
-    .nav-przycisk {
+    button, input[type=submit] {
       border: 2px solid #1b1715;
       border-radius: 10px;
       margin: 3px;
       background: var(--przyciski);
       font-weight: bold;
       cursor: pointer;
-      font-size: x-large;
+      font-size: medium;
       color: #1b1715;
       padding: 10px 20px;
       text-decoration: none;
     }
-    .nav-przycisk:hover {
+    button:hover, input[type=submit]:hover {
       background-color: #a7cca1;
+    }
+    .nav-przycisk {
+      @extend button;
+      font-size: x-large;
     }
     body {
       width: 900px;
       margin: auto;
-      background-image: url("static/deska-jasna.jpg");
+      background-image: url("/static/deska-jasna.jpg");
       background-repeat: repeat;
       background-size: cover;
 
