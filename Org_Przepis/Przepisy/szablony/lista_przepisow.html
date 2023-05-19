@@ -9,71 +9,91 @@
             background-color: var(--gradient_przepisy);
             margin-top: 10px;
             margin-bottom: 10px;
-            max-width: 50%;
+            max-width: 100%;
+            grid-template-columns: 733.33px auto;
+            grid-template-rows: auto;
+            grid-template-areas:
+                "zdjecie opis"
+                "nazwa nazwa"
+                "buttony buttony";
         }
+
+        .zdjecie {
+            grid-area: zdjecie;
+            width: 733.33px;
+            height: 488.88px;
+        }
+
+        .opis {
+            grid-area: opis;
+        }
+
+        .skladniki {
+            grid-area: nazwa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 324.67px;
+            background-color: #CCBEB6;
+        }
+
+        .buttony {
+            grid-area: buttony;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .wiersz {
             display: flex;
             padding: 5px;
             flex: 1;
         }
+
         label {
             margin-right: 5px;
             font-weight: bold;
             font-size: large;
         }
-        img {
-            max-width: 400px;
-            max-height: 400px;
-        }
     </style>
 
-<h1>Przepisy:</h1>
-<div>
-    <div class="wiersz">
-        <form action="{% url 'dodaj_przepis' %}">
-            <input type="submit" value="Dodaj przepis" />
-        </form>
-    </div>
-    {% for przepis in  przepisy %}
-        <div class="przepis">
-            <div class="wiersz">
-                <h2>{{przepis.nazwa}}</h2>
-            </div>
-            <div class="wiersz">
-                <div style="display: grid">
-                    {% for linijka in przepis.opis_podzielony %}
-                    <span>{{linijka}}&nbsp;</span>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="wiersz">
-                <label>Czas przygotowania: </label>
-                <span>{{przepis.czas_przygotowania_w_minutach}} min</span>
-            </div>
-            <div class="wiersz">
-                <label>Kalorie na 100g: </label>
-                <span>{{przepis.kalorie_na_100g}}</span>
-            </div>
-            <div class="wiersz">
-                <div style="display: grid">
-                    <label>Kategorie: </label>
-                    {% for k in przepis.k %}
-                    <span>{{k}}</span>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="wiersz">
-                <img src="{{przepis.zdjęcie}}">
-            </div>
-            <div class="wiersz">
-                <form action="{% url 'edytuj_przepis' pk=przepis.pk%}">
-                    <input type="submit" value="Edytuj" />
-                </form>
-                <form action="{% url 'usun_przepis' pk=przepis.pk%}">
-                    <input type="submit" value="Usuń" />
-                </form>
-            </div>
+    <h1>Przepisy:</h1>
+    <div>
+        <div class="wiersz">
+            <form action="{% url 'dodaj_przepis' %}">
+                <input type="submit" value="Dodaj przepis" />
+            </form>
         </div>
-    {% endfor %}
-</div>
+        {% for przepis in przepisy %}
+            <div class="przepis">
+                <div class="wiersz">
+                    <img class="zdjecie" src="{{przepis.zdjęcie}}">
+                </div>
+                <div class="wiersz">
+                    <div class="skladniki">
+                        <h2>Skadniki</h2>
+                    </div>
+                </div>
+                <div class="wiersz">
+                    <div class="opis">
+                        <h2>{{przepis.nazwa}}</h2>
+                        {% for linijka in przepis.opis_podzielony %}
+                            <span>{{linijka}}&nbsp;</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="wiersz">
+                    <div class="buttony">
+                        <form action="{% url 'edytuj_przepis' pk=przepis.pk%}">
+                            <input type="submit" value="Edytuj" />
+                        </form>
+                        <form action="{% url 'usun_przepis' pk=przepis.pk%}">
+                            <input type="submit" value="Usuń" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div id="rejestracja_zawartosc">
+    <form class="formularz" action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
+      <div class="form_pole">
+        <label for="id_username" class="form_label">Nazwa użytkownika:</label>
+        <input type="text" id="id_username" name="username" class="form_wartosc">
+      </div>
+      <div class="form_pole">
+        <label for="id_password1" class="form_label">Hasło:</label>
+        <input type="password" id="id_password1" name="password1" class="form_wartosc">
+      </div>
+      <div class="form_pole">
+        <label for="id_password2" class="form_label">Powtórz hasło:</label>
+        <input type="password" id="id_password2" name="password2" class="form_wartosc">
+      </div>
+      <input type="submit" value="Zarejestruj" class="nav-przycisk">
+    </form>
+  </div>
+{% endblock %}
