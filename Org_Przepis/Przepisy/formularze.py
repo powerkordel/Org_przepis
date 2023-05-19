@@ -1,6 +1,4 @@
 from django.forms import ModelForm
-from django.http import HttpResponseRedirect
-
 from .models import Przepis
 
 

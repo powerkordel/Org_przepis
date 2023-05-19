@@ -10,23 +10,32 @@
       --pasek: #B6CBCC;
       --gradient_zawartosc: #B6CBCC;
       --gradient_przepisy: linear-gradient(90deg, rgba(221,4,88,1) 73%, rgba(140,28,164,1) 100%);
+      --przepisy: #B6CBCC;
+      --przyciski: #B6CBCC;
     }
 
     nav {
-      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: var(--pasek);
       height: 75px;
       padding: 0 20px;
-      width: -webkit-fill-available;
-
-
+      position: sticky;
+      top: 0px;
+      margin-bottom: 30px;
     }
+
     .nav-element {
       display: flex;
     }
+
+    input, textarea, select {
+      background-color: #F5F5DC;
+      border: solid 1px black;
+      border-radius: 5px;
+    }
+
     button, input[type=submit] {
       border: 2px solid #1b1715;
       border-radius: 10px;
@@ -39,83 +48,109 @@
       padding: 10px 20px;
       text-decoration: none;
     }
+
     button:hover, input[type=submit]:hover {
       background-color: #a7cca1;
     }
+
     .nav-przycisk {
       @extend button;
       font-size: x-large;
     }
-    body {
+
+    .b {
       width: 1100px;
       margin: auto;
+    }
+
+    body {
       background-image: url("/static/deska-jasna.jpg");
       background-repeat: repeat;
       background-size: cover;
-
+      margin: 0px;
     }
+
     #glowna_zawartosc {
       background: var(--gradient_zawartosc);
       border-radius: 10px;
       padding: 5px;
       margin: 2px;
       border: 2px solid #1b1715;
+      display: flex;
+      justify-content: center;
     }
+
     .formularz {
       padding-right: 2px;
       padding-left: 2px;
       padding-top: 5px;
       padding-bottom: 5px;
     }
+
     .form_pole {
       display: grid;
       margin-bottom: 10px;
       width: max-content;
     }
+
     .form_bledy {
       color: red;
     }
+
     .form_label {
       font-weight: bold;
       margin-bottom: 5px;
     }
+
     .form_wartosc {
 
     }
+
     .icon-home::before {
-  content: "\f015"; /* Kod ikony domu */
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  margin-right: 5px;
-}
+      content: "\f015"; /* Kod ikony domu */
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      margin-right: 5px;
+    }
+
+    .wysrodkowany {
+      display: flex;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
   <nav>
     <div class="nav-element">
       <form class="nav-form" action="{% url 'home' %}">
-    <button class="nav-przycisk" type="submit">
-      <span class="icon-home" ></span>
-      Strona główna
-    </button>
-  </form>
+        <button class="nav-przycisk" type="submit">
+          <span class="icon-home" ></span>
+          Strona główna
+        </button>
+      </form>
     </div>
+    {% block dodatkowa_nawigacja %}
+    {% endblock %}
     <div class="nav-element">
       {% if user.is_authenticated %}
         <form class="nav-form" action="{% url 'logout' %}">
-          <input class="nav-przycisk" type="submit" value="Wyloguj" />
+          <button class="nav-przycisk" type="submit">Wyloguj się</button>
         </form>
       {% else %}
-        <form class="nav-form" action="{% url 'register' %}">
-          <input class="nav-przycisk" type="submit" value="Zarejestruj" />
-        </form>
-        <form class="nav-form" action="{% url 'login' %}">
-          <input class="nav-przycisk" type="submit" value="Zaloguj" />
-        </form>
+        {% if 'login' in request.path %}
+          <form class="nav-form" action="{% url 'register' %}">
+            <button class="nav-przycisk" type="submit">Zarejestruj się</button>
+          </form>
+        {% endif %}
+        {% if 'register' in request.path %}
+          <form class="nav-form" action="{% url 'login' %}">
+            <button class="nav-przycisk" type="submit">Zaloguj się</button>
+          </form>
+        {% endif %}
       {% endif %}
     </div>
   </nav>
-  <div id="glowna_zawartosc">
+  <div class="b">
     {% block content %}
     {% endblock %}
   </div>

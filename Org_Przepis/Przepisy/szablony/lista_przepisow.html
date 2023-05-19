@@ -1,45 +1,75 @@
 {% extends 'base.html' %}
 
+{% block dodatkowa_nawigacja %}
+    <div style="display: flex; align-items: center;">
+        <h1>Przepisy</h1>
+        <div class="wiersz">
+            <form action="{% url 'dodaj_przepis' %}">
+                <input type="submit" value="Dodaj przepis" />
+            </form>
+        </div>
+        <form action="{% url 'przepisy' %}" method="post">
+            {% csrf_token %}
+            <label for="kategoria">Kategoria:</label>
+                <select id="kategoria" name="kategoria" >
+                        <option value="*">Wszystkie</option>
+                  {% for k in kategorie %}
+                        <option value="{{k}}">{{k}}</option>
+                    {% endfor %}
+                </select>
+            <label for="skladnik">Składnik:</label>
+                <select id="skladnik" name="skladnik">
+                  <option value="*">Wszystkie</option>
+                  {% for s in skladniki %}
+                    <option value="{{s}}">{{s}}</option>
+                    {% endfor %}
+                </select>
+            <label for="slowo_klucz">Słowo klucz:</label>
+            <input type="text" id="slowo_klucz" name="slowo_klucz">
+            <button type="submit">Filtruj</button>
+        </form>
+    </div>
+    {% endblock %}
+
 {% block content %}
     <style>
         .przepis {
             display: grid;
             border: solid 2px black;
+            border-radius: 10px;
             padding: 10px;
-            background-color: var(--gradient_przepisy);
+            background-color: var(--przepisy);
             margin-top: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
             max-width: 100%;
             grid-template-columns: 733.33px auto;
             grid-template-rows: auto;
             grid-template-areas:
-                "zdjecie opis"
-                "nazwa nazwa"
-                "buttony buttony";
+                "zdjecie informacja"
+                "opis informacja"
         }
 
         .zdjecie {
             grid-area: zdjecie;
-             max-width: 100%;
-             max-height: 100%;
-             object-fit: contain;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .opis {
             grid-area: opis;
+            display: grid;
         }
 
         .skladniki {
-            grid-area: nazwa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 324.67px;
+            grid-area: informacja;
+            width: auto;
+            border-radius: 10px;
             background-color: #CCBEB6;
+            padding: 2px;
         }
 
         .buttony {
-            grid-area: buttony;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,6 +77,7 @@
 
         .wiersz {
             display: flex;
+            align-items: center;
             padding: 5px;
             flex: 1;
         }
@@ -56,45 +87,64 @@
             font-weight: bold;
             font-size: large;
         }
-    </style>
 
-    <h1>Przepisy:</h1>
-    <div>
-        <div class="wiersz">
-            <form action="{% url 'dodaj_przepis' %}">
-                <input type="submit" value="Dodaj przepis" />
-            </form>
-        </div>
+        .kategorie {
+            font-style: italic;
+            background-color: salmon;
+            width: fit-content;
+            padding: 3px;
+            margin: 1px;
+            border-radius: 5px;
+        }
+    </style>
         {% for przepis in przepisy %}
             <div class="przepis">
                 <div class="wiersz">
                     <img class="zdjecie" src="{{przepis.zdjęcie}}">
                 </div>
-                <div class="wiersz">
-                    <div class="skladniki">
-                        <h2>Skadniki</h2>
-                    </div>
-                </div>
-                <div class="wiersz">
-                    <div class="opis">
-                        <h2>{{przepis.nazwa}}</h2>
-                        {% for linijka in przepis.opis_podzielony %}
-                            <span>{{linijka}}&nbsp;</span>
+                <div class="skladniki">
+                    <div class="wysrodkowany"><h2>Info</h2></div>
+                    <div class="wiersz">
+                        {% for k in przepis.wszystkie_kategorie %}
+                        <div class="kategorie">{{k}}</div>
                         {% endfor %}
                     </div>
+                    <div class="wiersz">
+                        <label>Czas przygotowania: </label>
+                        <span>{{przepis.czas_przygotowania_w_minutach}} min</span>
+                    </div>
+                    <div class="wiersz">
+                        <label>Kalorie: </label>
+                        <span>{{przepis.kalorie_na_100g}} kcal</span>
+                    </div>
+                    <div class="wysrodkowany"><h2>Składniki</h2></div>
+                    <ul>
+                        {% for s in przepis.wszystkie_skladniki %}
+                        <li><span>{{s.składnik}}: {{s.ilość}} {{s.miara.skrót}}</span></li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                <div class="wiersz">
-                    <div class="buttony">
-                        <form action="{% url 'edytuj_przepis' pk=przepis.pk%}">
-                            <input type="submit" value="Edytuj" />
-                        </form>
-                        <form action="{% url 'usun_przepis' pk=przepis.pk%}">
-                            <input type="submit" value="Usuń" />
-                        </form>
+                <div class="opis">
+                    <div class="wiersz">
+                        <div class="buttony">
+                            <form action="{% url 'edytuj_przepis' pk=przepis.pk%}">
+                                <input type="submit" value="Edytuj" />
+                            </form>
+                            <form action="{% url 'usun_przepis' pk=przepis.pk%}">
+                                <input type="submit" value="Usuń" />
+                            </form>
+                        </div>
+                    </div>
+                    <div class="wiersz">
+                        <div class="opis">
+                            <h2>{{przepis.nazwa}}</h2>
+                            {% for linijka in przepis.opis_podzielony %}
+                                <span>{{linijka}}&nbsp;</span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
-    </div>
 {% endblock %}
 
