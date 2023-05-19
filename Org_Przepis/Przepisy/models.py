@@ -1,14 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Kategoria(models.Model):
     class Meta:
         verbose_name_plural = 'Kategorie'
     nazwa = models.CharField(max_length=50)
     def __str__(self):
         return self.nazwa
-
 
 class Przepis(models.Model):
     class Meta:
@@ -23,7 +21,6 @@ class Przepis(models.Model):
     def __str__(self):
         return self.nazwa
 
-
 class Skladnik(models.Model):
     class Meta:
         verbose_name_plural = 'Skladniki'
@@ -33,7 +30,6 @@ class Skladnik(models.Model):
     def __str__(self):
         return self.nazwa
 
-
 class Miary(models.Model):
     class Meta:
         verbose_name_plural = 'Miary_Ilośi'
@@ -41,7 +37,6 @@ class Miary(models.Model):
     skrót = models.CharField(max_length=10, null=True, blank=True)
     def __str__(self):
         return self.nazwa
-
 
 class PrzepisSkladnik(models.Model):
     class Meta:
