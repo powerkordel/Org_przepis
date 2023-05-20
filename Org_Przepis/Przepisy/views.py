@@ -29,18 +29,18 @@ def przepisy(request):
         slowo_klucz = post.get('slowo_klucz')
         for p in wszystkie_przepisy:
             dodac = True
-            if kategoria is not '*':
+            if kategoria != '*':
                 kategorie = p.kategorie.all()
                 ma_kategorie = False
                 for k in kategorie:
                     ma_kategorie |= kategoria == k.nazwa
                 dodac = ma_kategorie
-            if skladnik is not '*':
+            if skladnik != '*':
                 s = Skladnik.objects.get(nazwa=skladnik)
                 ps = PrzepisSkladnik.objects.filter(przepis=p, składnik=s)
                 if len(ps) == 0:
                     dodac = False
-            if slowo_klucz is not '':
+            if slowo_klucz != '':
                 pasuje = False
                 pasuje |= slowo_klucz.lower() in p.nazwa.lower()
                 pasuje |= slowo_klucz.lower() in p.opis.lower()
