@@ -12,20 +12,36 @@
             {% csrf_token %}
             <label for="kategoria">Kategoria:</label>
                 <select id="kategoria" name="kategoria" >
+                    {% if kategoria == '*' %}
+                        <option value="*" selected>Wszystkie</option>
+                    {% else %}
                         <option value="*">Wszystkie</option>
+                    {% endif %}
                   {% for k in kategorie %}
+                        {% if kategoria == k.nazwa %}
+                        <option value="{{k}}" selected>{{k}}</option>
+                    {% else %}
                         <option value="{{k}}">{{k}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             <label for="skladnik">Składnik:</label>
                 <select id="skladnik" name="skladnik">
-                  <option value="*">Wszystkie</option>
+                    {% if skladnik == '*' %}
+                        <option value="*" selected>Wszystkie</option>
+                    {% else %}
+                        <option value="*">Wszystkie</option>
+                    {% endif %}
                   {% for s in skladniki %}
-                    <option value="{{s}}">{{s}}</option>
+                    {% if skladnik == s.nazwa %}
+                        <option value="{{s}}" selected>{{s}}</option>
+                    {% else %}
+                        <option value="{{s}}">{{s}}</option>
+                    {% endif %}
                     {% endfor %}
                 </select>
             <label for="slowo_klucz">Słowo klucz:</label>
-            <input type="text" id="slowo_klucz" name="slowo_klucz">
+            <input type="text" id="slowo_klucz" name="slowo_klucz" value="{{slowo_klucz}}">
             <button type="submit">Filtruj</button>
         </form>
     </div>
